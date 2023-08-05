@@ -47,6 +47,15 @@ class JWTConfig(ProjectEnv):
         return f'{self.__secret}'
 
 
+class UserManagerSecret(ProjectEnv):
+
+    def __init__(self):
+        self.__secret = self.get_env('USER_MANAGER_SECRET')
+
+    def __call__(self, *args, **kwargs):
+        return f'{self.__secret}'
+
+
 def get_db_url():
     db_conf = DatabaseConfig()
     return db_conf()
@@ -55,3 +64,8 @@ def get_db_url():
 def get_jwt_secret():
     jwt_conf = JWTConfig()
     return jwt_conf()
+
+
+def get_user_manager_secret():
+    ums = UserManagerSecret()
+    return ums()
