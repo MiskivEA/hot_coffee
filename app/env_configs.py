@@ -10,7 +10,8 @@ class ProjectEnv:
 
 
 class DatabaseConfig(ProjectEnv):
-    connection_string = 'postgresql+asyncpg://{0}:{1}@{2}:{3}/{4}'
+    connection_string_async = 'postgresql+asyncpg://{0}:{1}@{2}:{3}/{4}'
+    connection_string_sync = 'postgresql://{0}:{1}@{2}:{3}/{4}'
     __instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -28,8 +29,11 @@ class DatabaseConfig(ProjectEnv):
     def __str__(self):
         return f'DB_URL {self.__name}'
 
-    def __call__(self):
-        return f'{self.connection_string.format(*self.__dict__.values())}'
+    def get_db_url_async(self):
+        return f'{self.connection_string_async.format(*self.__dict__.values())}'
+
+    def get_db_url_sync(self):
+        return f'{self.connection_string_sync.format(*self.__dict__.values())}'
 
 
 class JWTConfig(ProjectEnv):
@@ -58,7 +62,7 @@ class UserManagerSecret(ProjectEnv):
 
 def get_db_url():
     db_conf = DatabaseConfig()
-    return db_conf()
+    return db_conf.get_db_url_async()
 
 
 def get_jwt_secret():

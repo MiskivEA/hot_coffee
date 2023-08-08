@@ -13,7 +13,7 @@ SECRET = get_jwt_secret()
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+    return JWTStrategy(secret=SECRET, lifetime_seconds=36000)
 
 
 # backend
@@ -24,7 +24,7 @@ auth_backend = AuthenticationBackend(
 )
 
 # fast api users
-fastapi_users_backend = FastAPIUsers[User, int](
+fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
     [auth_backend],
 )

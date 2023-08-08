@@ -1,19 +1,14 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 
-from app.database import create_db_and_tables
-import asyncio
-
-from app.users.auth import fastapi_users_backend, auth_backend
+from app.users.auth import auth_backend
 from app.users.models import User
 from app.users.schemas import UserCreate, UserRead
 from app.users.user_manager import get_user_manager
+from app.users.router import user_router
+from app.users.auth import fastapi_users
 
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
-)
 
 app = FastAPI()
 app.include_router(
@@ -26,6 +21,7 @@ app.include_router(
     prefix="/auth/jwt",
     tags=["auth"]
 )
+app.include_router(user_router)
 
 
 @app.get('/')

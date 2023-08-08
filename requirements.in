@@ -5,3 +5,4 @@ fastapi-users[sqlalchemy]
 uvicorn
 asyncpg
 environs
+alembic
